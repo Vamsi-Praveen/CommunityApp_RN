@@ -12,32 +12,34 @@ const Login = () => {
     const { error, setError, user, setUser } = useAuth()
     const handleLogin = async () => {
         Keyboard.dismiss()
+        let validationError = false
         setError({
             username: '',
             password: ''
         })
         if (user.username === '') {
             setError(prevError => ({ ...prevError, username: 'Username is required' }));
-            setHasError(true)
+            validationError = true
         }
         if (user.password === '') {
             setError(prevError => ({ ...prevError, password: 'Password is required' }));
-            setHasError(true)
+            validationError = true
         }
-        if (hasError) {
-            return
+        setHasError(validationError)
+        if (!validationError) {
+            setLoading(true)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000);
         }
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 2000);
+
     }
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
             <Text style={{ fontSize: 40, color: '#BBBBBB', textAlign: 'center', fontFamily: 'DmSans' }}>Welcome back&nbsp;🖐,</Text>
             <Text style={{ fontSize: 20, color: '#BBBBBB', textAlign: 'center', fontFamily: 'DmSans' }}>Please Login to Continue&nbsp;&nbsp;</Text>
-            <View style={{ width: '95%', paddingHorizontal: 20, marginTop: 25, gap: error.username.length ? 7 : 15 }}>
+            <View style={{ width: '100%', paddingHorizontal: 20, marginTop: 25, gap: error.username.length ? 7 : 15 }}>
                 <Input placeholder={'Username or Email'} onChange={(e) => { setUser((prev) => ({ ...prev, username: e })) }} />
                 {
                     error.username.length > 0 && <Text style={{ color: '#fd8438', marginVertical: 5, fontFamily: 'DmSans' }}>{error.username}</Text>
@@ -47,7 +49,7 @@ const Login = () => {
                     error.password.length > 0 && <Text style={{ color: '#fd8438', marginVertical: 5, fontFamily: 'DmSans' }}>{error.password}</Text>
                 }
             </View>
-            <View style={{ marginTop: 15 }}>
+            <View style={{ marginTop: 15, width: '90%' }}>
                 <Button text={'Login'} disabled={loading} loading={loading} onPress={handleLogin} />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, marginTop: 25 }}>

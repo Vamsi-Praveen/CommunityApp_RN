@@ -3,7 +3,7 @@ import { TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import useAuth from '../hooks/useAuth'
 
-const Input = ({ value, placeholder, onChange, secureText }) => {
+const Input = ({ value, placeholder, onChange, secureText, phone, email }) => {
     const { showPassword, setShowPassword } = useAuth()
     const iconName = showPassword ? 'eye-off' : 'eye'
     return (
@@ -15,6 +15,7 @@ const Input = ({ value, placeholder, onChange, secureText }) => {
                 placeholderTextColor={'gray'}
                 cursorColor={'gray'}
                 autoCapitalize='none'
+                inputMode={phone && 'numeric' || email && 'email'}
                 style={{ color: '#838383', fontFamily: 'DmSans', paddingVertical: 15, fontSize: 22, paddingHorizontal: 12, borderRadius: 6, borderWidth: 1, borderColor: 'gray', position: 'relative', zIndex: -1 }} />
             {
                 secureText &&
