@@ -14,6 +14,7 @@ const Input = ({ value, placeholder, onChange, secureText }) => {
                 value={value}
                 placeholderTextColor={'gray'}
                 cursorColor={'gray'}
+                autoCapitalize='none'
                 style={{ color: '#838383', fontFamily: 'DmSans', paddingVertical: 15, fontSize: 22, paddingHorizontal: 12, borderRadius: 6, borderWidth: 1, borderColor: 'gray', position: 'relative', zIndex: -1 }} />
             {
                 secureText &&

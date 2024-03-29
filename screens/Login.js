@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Keyboard } from 'react-native'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import useAuth from '../hooks/useAuth'
@@ -8,24 +8,31 @@ import useAuth from '../hooks/useAuth'
 const Login = () => {
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
+    const [hasError, setHasError] = useState(false)
     const { error, setError, user, setUser } = useAuth()
     const handleLogin = async () => {
-        if (user.username == '') {
-            setError({ ...error, username: 'Username is required' })
-        }
-        if (user.password == '') {
-            setError({ ...error, password: 'Password is required' })
-        }
+        Keyboard.dismiss()
         setError({
             username: '',
             password: ''
         })
+        if (user.username === '') {
+            setError(prevError => ({ ...prevError, username: 'Username is required' }));
+            setHasError(true)
+        }
+        if (user.password === '') {
+            setError(prevError => ({ ...prevError, password: 'Password is required' }));
+            setHasError(true)
+        }
+        if (hasError) {
+            return
+        }
         setLoading(true)
-
         setTimeout(() => {
             setLoading(false)
         }, 2000);
     }
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
             <Text style={{ fontSize: 40, color: '#BBBBBB', textAlign: 'center', fontFamily: 'DmSans' }}>Welcome back&nbsp;🖐,</Text>
@@ -45,7 +52,7 @@ const Login = () => {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, marginTop: 25 }}>
                 <Text style={{ color: '#bbbbbb', fontSize: 18, fontFamily: 'DmSans' }}>Don't have an account,</Text>
-                <TouchableOpacity style={{}}><Text style={{ color: '#fd8438', textDecorationLine: 'underline', fontSize: 18, fontFamily: 'DmSans' }}>Join us</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}><Text style={{ color: '#fd8438', textDecorationLine: 'underline', fontSize: 18, fontFamily: 'DmSans' }}>Join us</Text></TouchableOpacity>
             </View>
         </View>
     )
